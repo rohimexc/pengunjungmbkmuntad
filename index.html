@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Pengunjung Pusat MBKM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .search-dropdown {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .hidden { display: none !important; }
+        .bg-custom {
+            background: linear-gradient(135deg, rgba(2, 124, 246, 0.1), rgba(59, 130, 246, 0.1)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(2,124,246,0.05)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/><circle cx="200" cy="200" r="100" fill="rgba(2,124,246,0.03)"/><circle cx="800" cy="300" r="150" fill="rgba(2,124,246,0.03)"/><circle cx="400" cy="700" r="120" fill="rgba(2,124,246,0.03)"/><circle cx="700" cy="800" r="80" fill="rgba(2,124,246,0.03)"/></svg>');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-custom min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <img src="header form.png" alt="Logo UNTAD" class="mx-auto mb-2 w-72 object-contain">
+            <h1 class="text-4xl font-bold mb-2" style="color: #027cf6;">Pusat MBKM - LPPM UNTAD</h1>
+            <p class="text-2xl text-gray-600">Buku Pengunjung Digital</p>
+        </div>
+
+        <!-- Form Container -->
+        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
+            <form id="visitorForm" class="space-y-6">
+                <!-- Nama Lengkap -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap *</label>
+                    <input type="text" id="namaLengkap" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 uppercase"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'"
+                           placeholder="MASUKKAN NAMA LENGKAP">
+                </div>
+
+                <!-- No. WhatsApp -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">No. WhatsApp *</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.787"/>
+                            </svg>
+                        </div>
+                        <input type="tel" id="noWhatsapp" required 
+                               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                               style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                               onfocus="this.style.borderColor='#027cf6'"
+                               onblur="this.style.borderColor='#d1d5db'"
+                               placeholder="08xxxxxxxxxx" pattern="[0-9]+">
+                    </div>
+                </div>
+
+                <!-- Jabatan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan *</label>
+                    <select id="jabatan" required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'">
+                        <option value="">Pilih Jabatan</option>
+                        <option value="Dosen">Dosen</option>
+                        <option value="Tendik">Tendik</option>
+                        <option value="Mahasiswa">Mahasiswa</option>
+                        <option value="Universitas Lain">Universitas Lain</option>
+                    </select>
+                </div>
+
+                <!-- NIM/NUPTK/No.Reg -->
+                <div id="nimContainer" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2" id="nimLabel">NIM/NUPTK/No.Reg *</label>
+                    <input type="text" id="nimNuptkReg" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 uppercase"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'"
+                           placeholder="Masukkan NIM/NUPTK/No.Reg">
+                </div>
+
+                <!-- Prodi Asal -->
+                <div id="prodiContainer">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Prodi Asal *</label>
+                    <div class="relative">
+                        <input type="text" id="prodiSearch" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'"
+                               placeholder="Cari atau pilih prodi..."
+                               autocomplete="off">
+                        <div id="prodiDropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 search-dropdown hidden">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fakultas Asal -->
+                <div id="fakultasContainer">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Fakultas Asal</label>
+                    <input type="text" id="fakultasAsal" readonly
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-600"
+                           placeholder="Fakultas akan terisi otomatis">
+                </div>
+
+                <!-- Topik Keperluan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Topik Keperluan *</label>
+                    <select id="topikKeperluan" required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'">
+                        <option value="">Pilih Topik Keperluan</option>
+                        <option value="SITAMPAN">SITAMPAN</option>
+                        <option value="MBKM">MBKM</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <!-- SITAMPAN Sub-Options -->
+                <div id="sitampanContainer" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Sub Topik SITAMPAN *</label>
+                    <select id="sitampanSubtopik" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'">
+                        <option value="">Pilih Sub Topik SITAMPAN</option>
+                        <option value="Pendaftaran Akun">Pendaftaran Akun</option>
+                        <option value="Pendaftaran Program">Pendaftaran Program</option>
+                        <option value="KRS">KRS</option>
+                        <option value="Sinkronisasi">Sinkronisasi</option>
+                        <option value="Logbook">Logbook</option>
+                        <option value="Laporan">Laporan</option>
+                        <option value="Mentor">Mentor</option>
+                        <option value="Dosen Pembimbing">Dosen Pembimbing</option>
+                    </select>
+                </div>
+
+                <!-- MBKM Sub-Options -->
+                <div id="mbkmContainer" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Sub Topik MBKM *</label>
+                    <select id="mbkmSubtopik" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'">
+                        <option value="">Pilih Sub Topik MBKM</option>
+                        <option value="Pendaftaran Program">Pendaftaran Program</option>
+                        <option value="Kampus Berdampak">Kampus Berdampak</option>
+                        <option value="Liga Kampus Mandiri Berdampak">Liga Kampus Mandiri Berdampak</option>
+                        <option value="Liga Praktisi Mengajar">Liga Praktisi Mengajar</option>
+                        <option value="Kerjasama">Kerjasama</option>
+                        <option value="Panduan">Panduan</option>
+                        <option value="Informasi">Informasi</option>
+                        <option value="Diskusi">Diskusi</option>
+                    </select>
+                </div>
+
+                <!-- Input Lainnya -->
+                <div id="lainnyaContainer" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Sebutkan Keperluan Lainnya *</label>
+                    <input type="text" id="keperluanLainnya" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'"
+                           placeholder="Masukkan keperluan lainnya">
+                </div>
+
+                <!-- Deskripsi Keperluan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Keperluan *</label>
+                    <textarea id="deskripsiKeperluan" required rows="4"
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
+                           style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
+                           onfocus="this.style.borderColor='#027cf6'"
+                           onblur="this.style.borderColor='#d1d5db'"
+                              placeholder="Jelaskan keperluan Anda secara detail..."></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" 
+                        class="w-full text-white py-3 px-6 rounded-lg font-semibold transition duration-200 focus:ring-2 focus:ring-offset-2"
+                        style="background-color: #027cf6; --tw-ring-color: #027cf6;"
+                        onmouseover="this.style.backgroundColor='#0369d9'"
+                        onmouseout="this.style.backgroundColor='#027cf6'">
+                    Submit Buku Pengunjung
+                </button>
+            </form>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center">
+                <div class="mb-6">
+                    <div class="w-48 mx-auto mb-4">
+                        <img src="header form.png" alt="Logo Diktisaintek" class="w-full h-full object-contain" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Silahkan Menunggu Nama Sobat di Panggil oleh Admin Pusat MBKM</h3>
+                </div>
+                
+                <div class="text-center bg-gray-50 p-4 rounded-lg mb-6">
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        <strong>Terimakasih</strong><br>
+                        Kepada pengunjung yang telah berkenan hadir dan mengisi buku pengunjung MBKM.
+                        Partisipasi Anda sangat berarti bagi kami dalam meningkatkan kualitas layanan dan program.
+                        <br><br>
+                        <strong>Salam hangat,<br>
+                        Pusat MBKM UNTAD</strong>
+                    </p>
+                </div>
+                
+                <button onclick="closeModal()" 
+                        class="text-white px-6 py-2 rounded-lg transition duration-200"
+                        style="background-color: #027cf6;"
+                        onmouseover="this.style.backgroundColor='#0369d9'"
+                        onmouseout="this.style.backgroundColor='#027cf6'">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-lg mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Ikuti Media Sosial Kami</h3>
+                <div class="flex justify-center space-x-6">
+                    <!-- YouTube -->
+                    <a href="https://youtube.com/@mbkmuntadofficial" target="_blank" rel="noopener noreferrer"
+                       class="flex items-center justify-center w-12 h-12 bg-red-600 text-white rounded-full hover:bg-red-700 transition duration-200 transform hover:scale-110">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                    
+                    <!-- Instagram -->
+                    <a href="https://instagram.com/mbkmuntadofficial" target="_blank" rel="noopener noreferrer"
+                       class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-200 transform hover:scale-110">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/6285161055918" target="_blank" rel="noopener noreferrer"
+                       class="flex items-center justify-center w-12 h-12 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-200 transform hover:scale-110">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.787"/>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <p class="text-sm text-gray-600">
+                        © 2025 Pusat MBKM UNTAD. Created by Abdul Rohim.
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Universitas Tadulako - Palu, Sulawesi Tengah
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Faculty and Program Data
+        const fakultasMap = new Map([
+          ["Fakultas Kesehatan Masyarakat", {
+            kode: "P",
+            prodi: [
+              "S1 - Kesehatan Masyarakat",
+              "S1 - Gizi"
+            ]
+          }],
+          ["Fakultas Teknik", {
+            kode: "F",
+            prodi: [
+              "S1 - Teknik Elektro",
+              "S1 - Teknik Informatika",
+              "S1 - Sistem Informasi",
+              "D4 - Teknologi Rekayasa Manufaktur",
+              "S1 - Teknik Mesin",
+              "S1 - Perencanaan Wilayah dan Kota",
+              "S1 - Teknik Sipil (Kampus Kab. Morowali)",
+              "S1 - Teknik Sipil Kampus Kab Tojo Una-una",
+              "S1 - Arsitektur",
+              "D4 - Teknologi Rekayasa Instalasi Listrik",
+              "D4 - Teknologi Rekayasa Konstruksi Jalan dan Jembatan",
+              "S1 - Teknik Sipil",
+              "S1 - Teknik Geologi",
+              "S1 - Teknik Lingkungan"
+            ]
+          }],
+          ["Fakultas Keguruan dan Ilmu Pendidikan", {
+            kode: "A",
+            prodi: [
+              "S1 - Bimbingan Dan Konseling",
+              "S1 - Pendidikan Biologi",
+              "S1 - Pendidikan Matematika",
+              "S1 - Pendidikan Jasmani, Kesehatan Dan Rekreasi",
+              "S1 - Pendidikan Kimia",
+              "S1 - Pendidikan Bahasa Dan Sastra Indonesia",
+              "S1 - Pendidikan Guru Sekolah Dasar",
+              "S1 - Pendidikan Sejarah",
+              "S1 - Pendidikan Bahasa Inggris",
+              "S1 - Pendidikan Fisika",
+              "S1 - Pendidikan Guru Pendidikan Anak Usia Dini",
+              "S1 - Pendidikan Pancasila Dan Kewarganegaraan",
+              "S1 - Pendidikan Geografi",
+              "S1 - Pendidikan Kepelatihan Olahraga",
+              "S1 - Pendidikan Ilmu Pengetahuan Alam"
+            ]
+          }],
+          ["Fakultas Ilmu Sosial dan Ilmu Politik", {
+            kode: "B",
+            prodi: [
+              "S1 - Ilmu Pemerintahan",
+              "S1 - Antropologi",
+              "S1 - Ilmu Administrasi Publik",
+              "S1 - Ilmu Komunikasi",
+              "S1 - Sosiologi"
+            ]
+          }],
+          ["Fakultas Peternakan dan Perikanan", {
+            kode: "O",
+            prodi: [
+              "S1 - Peternakan",
+              "S1 - Akuakultur",
+              "S1 - Sosial Ekonomi Peternakan",
+              "S1 - Ilmu Kelautan",
+              "S1 - Sumber Daya Akuatik"
+            ]
+          }],
+          ["Fakultas Ekonomi dan Bisnis", {
+            kode: "C",
+            prodi: [
+              "S1 - Akuntansi",
+              "S1 - Ekonomi dan Pembangunan",
+              "S1 - Manajemen",
+              "D4 - Akuntansi Sektor Publik",
+              "S1 - Manajemen Kampus Kab. Tojo Una-una",
+              "S1 - Manajemen (Kampus Kab.Morowali)",
+              "D3 - Manajemen Pemasaran"
+            ]
+          }],
+          ["Fakultas Pertanian", {
+            kode: "E",
+            prodi: [
+              "S1 - Agroteknologi",
+              "S1 - Agroteknologi Kampus Kab. Tojo Una-una",
+              "S1 - Agroteknologi (Kampus Kab. Morowali)",
+              "S1 - Agribisnis",
+              "S1 - Proteksi Tanaman"
+            ]
+          }],
+          ["Fakultas Matematika dan Ilmu Pengetahuan Alam", {
+            kode: "G",
+            prodi: [
+              "S1 - Matematika",
+              "S1 - Statistika",
+              "S1 - Biologi",
+              "S1 - Kimia",
+              "S1 - Teknik Geofisika",
+              "S1 - Fisika",
+              "S1 - Farmasi",
+              "S1 - Sains Data"
+            ]
+          }],
+          ["Fakultas Kehutanan", {
+            kode: "L",
+            prodi: [
+              "S1 - Kehutanan",
+              "D3 - Konservasi Sumberdaya Hutan"
+            ]
+          }],
+          ["Fakultas Hukum", {
+            kode: "D",
+            prodi: [
+              "S1 - Ilmu Hukum"
+            ]
+          }]
+        ]);
+
+        // Get all programs for general search
+        const getAllProdi = () => {
+            const allProdi = [];
+            fakultasMap.forEach((data, fakultas) => {
+                allProdi.push(...data.prodi);
+            });
+            return allProdi;
+        };
+
+        // Get faculty by code
+        const getFacultyByCode = (code) => {
+            for (const [fakultas, data] of fakultasMap) {
+                if (data.kode === code) {
+                    return fakultas;
+                }
+            }
+            return null;
+        };
+
+        // Get faculty by prodi
+        const getFacultyByProdi = (prodi) => {
+            for (const [fakultas, data] of fakultasMap) {
+                if (data.prodi.includes(prodi)) {
+                    return fakultas;
+                }
+            }
+            return null;
+        };
+
+        // SITAMPAN sub-options
+        const sitampanOptions = [
+            "Pendaftaran Akun",
+            "Pendaftaran Program", 
+            "KRS",
+            "Sinkronisasi",
+            "Logbook",
+            "Laporan",
+            "Mentor",
+            "Dosen Pembimbing"
+        ];
+
+        // Initialize form functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFormHandlers();
+            setupProdiSearch();
+        });
+
+        function setupFormHandlers() {
+            const jabatanSelect = document.getElementById('jabatan');
+            const nimContainer = document.getElementById('nimContainer');
+            const nimInput = document.getElementById('nimNuptkReg');
+            const nimLabel = document.getElementById('nimLabel');
+            const fakultasInput = document.getElementById('fakultasAsal');
+            const topikSelect = document.getElementById('topikKeperluan');
+            const lainnyaContainer = document.getElementById('lainnyaContainer');
+
+            // Handle jabatan change
+            jabatanSelect.addEventListener('change', function() {
+                const jabatan = this.value;
+                const prodiContainer = document.getElementById('prodiContainer');
+                const fakultasContainer = document.getElementById('fakultasContainer');
+                const prodiSearch = document.getElementById('prodiSearch');
+                
+                if (jabatan === 'Universitas Lain') {
+                    nimContainer.classList.add('hidden');
+                    prodiContainer.classList.add('hidden');
+                    fakultasContainer.classList.add('hidden');
+                    nimInput.removeAttribute('required');
+                    prodiSearch.removeAttribute('required');
+                    fakultasInput.value = '';
+                    prodiSearch.value = '';
+                    nimInput.value = '';
+                } else if (jabatan) {
+                    nimContainer.classList.remove('hidden');
+                    prodiContainer.classList.remove('hidden');
+                    fakultasContainer.classList.remove('hidden');
+                    nimInput.setAttribute('required', 'required');
+                    prodiSearch.setAttribute('required', 'required');
+                    
+                    // Update label based on jabatan
+                    if (jabatan === 'Mahasiswa') {
+                        nimLabel.textContent = 'NIM *';
+                        nimInput.placeholder = 'Masukkan NIM';
+                    } else if (jabatan === 'Dosen') {
+                        nimLabel.textContent = 'NUPTK *';
+                        nimInput.placeholder = 'Masukkan NUPTK';
+                    } else if (jabatan === 'Tendik') {
+                        nimLabel.textContent = 'No. Reg *';
+                        nimInput.placeholder = 'Masukkan No. Reg';
+                    }
+                } else {
+                    nimContainer.classList.add('hidden');
+                    prodiContainer.classList.remove('hidden');
+                    fakultasContainer.classList.remove('hidden');
+                    nimInput.removeAttribute('required');
+                    fakultasInput.value = '';
+                    nimInput.value = '';
+                }
+            });
+
+            // Handle NIM input for faculty detection and prodi filtering
+            nimInput.addEventListener('input', function() {
+                const jabatan = jabatanSelect.value;
+                let value = this.value;
+                
+                // Apply different patterns based on jabatan
+                if (jabatan === 'Mahasiswa') {
+                    // NIM: Allow 0-9 and A-Z
+                    value = value.replace(/[^0-9A-Za-z]/g, '').toUpperCase();
+                } else if (jabatan === 'Dosen' || jabatan === 'Tendik') {
+                    // NUPTK and No. Reg: Only allow 0-9
+                    value = value.replace(/[^0-9]/g, '');
+                }
+                
+                this.value = value;
+                
+                if (value.length > 0 && jabatan === 'Mahasiswa') {
+                    const firstLetter = value.charAt(0);
+                    const faculty = getFacultyByCode(firstLetter);
+                    fakultasInput.value = faculty || 'Fakultas tidak terset';
+                    
+                    // Update prodi options based on faculty
+                    updateProdiOptions(faculty);
+                } else if (jabatan !== 'Universitas Lain') {
+                    fakultasInput.value = '';
+                    updateProdiOptions(null);
+                }
+            });
+
+            // Handle topik keperluan
+            topikSelect.addEventListener('change', function() {
+                const keperluanLainnya = document.getElementById('keperluanLainnya');
+                const sitampanContainer = document.getElementById('sitampanContainer');
+                const sitampanSubtopik = document.getElementById('sitampanSubtopik');
+                const mbkmContainer = document.getElementById('mbkmContainer');
+                const mbkmSubtopik = document.getElementById('mbkmSubtopik');
+                
+                // Reset all containers
+                lainnyaContainer.classList.add('hidden');
+                sitampanContainer.classList.add('hidden');
+                mbkmContainer.classList.add('hidden');
+                keperluanLainnya.removeAttribute('required');
+                sitampanSubtopik.removeAttribute('required');
+                mbkmSubtopik.removeAttribute('required');
+                keperluanLainnya.value = '';
+                sitampanSubtopik.value = '';
+                mbkmSubtopik.value = '';
+                
+                if (this.value === 'SITAMPAN') {
+                    sitampanContainer.classList.remove('hidden');
+                    sitampanSubtopik.setAttribute('required', 'required');
+                } else if (this.value === 'MBKM') {
+                    mbkmContainer.classList.remove('hidden');
+                    mbkmSubtopik.setAttribute('required', 'required');
+                } else if (this.value === 'Lainnya') {
+                    lainnyaContainer.classList.remove('hidden');
+                    keperluanLainnya.setAttribute('required', 'required');
+                }
+            });
+
+            // Handle form submission
+            document.getElementById('visitorForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitForm();
+            });
+
+            // Force uppercase for name input
+            document.getElementById('namaLengkap').addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+
+            // Only numbers for WhatsApp
+            document.getElementById('noWhatsapp').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        }
+
+        // Update prodi options based on faculty
+        function updateProdiOptions(faculty) {
+            const prodiSearch = document.getElementById('prodiSearch');
+            
+            if (faculty && fakultasMap.has(faculty)) {
+                // Set available prodi for this faculty
+                window.currentProdiList = fakultasMap.get(faculty).prodi;
+            } else {
+                // Use all prodi if no specific faculty
+                window.currentProdiList = getAllProdi();
+            }
+            
+            // Clear current prodi selection if it's not valid for the new faculty
+            if (prodiSearch.value && window.currentProdiList && !window.currentProdiList.includes(prodiSearch.value)) {
+                prodiSearch.value = '';
+            }
+        }
+
+        function setupProdiSearch() {
+            const prodiSearch = document.getElementById('prodiSearch');
+            const prodiDropdown = document.getElementById('prodiDropdown');
+            
+            // Initialize with all prodi
+            window.currentProdiList = getAllProdi();
+
+            prodiSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const availableProdi = window.currentProdiList || getAllProdi();
+                const filteredProdi = availableProdi.filter(prodi => 
+                    prodi.toLowerCase().includes(searchTerm)
+                );
+
+                if (searchTerm && filteredProdi.length > 0) {
+                    prodiDropdown.innerHTML = filteredProdi.map(prodi => 
+                        `<div class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectProdi('${prodi}')">${prodi}</div>`
+                    ).join('');
+                    prodiDropdown.classList.remove('hidden');
+                } else {
+                    prodiDropdown.classList.add('hidden');
+                }
+
+                // Auto-fill faculty for Dosen/Tendik when typing exact match
+                const jabatan = document.getElementById('jabatan').value;
+                if ((jabatan === 'Dosen' || jabatan === 'Tendik') && availableProdi.includes(this.value)) {
+                    const faculty = getFacultyByProdi(this.value);
+                    document.getElementById('fakultasAsal').value = faculty || '';
+                }
+            });
+
+            prodiSearch.addEventListener('focus', function() {
+                if (this.value) {
+                    const event = new Event('input');
+                    this.dispatchEvent(event);
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!prodiSearch.contains(e.target) && !prodiDropdown.contains(e.target)) {
+                    prodiDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        function selectProdi(prodi) {
+            document.getElementById('prodiSearch').value = prodi;
+            document.getElementById('prodiDropdown').classList.add('hidden');
+            
+            // Auto-fill faculty for Dosen/Tendik based on selected prodi
+            const jabatan = document.getElementById('jabatan').value;
+            if (jabatan === 'Dosen' || jabatan === 'Tendik') {
+                const faculty = getFacultyByProdi(prodi);
+                document.getElementById('fakultasAsal').value = faculty || '';
+            }
+        }
+
+        function submitForm() {
+            // Determine final topic value
+            let finalTopik = document.getElementById('topikKeperluan').value;
+            if (finalTopik === 'SITAMPAN') {
+                const subtopik = document.getElementById('sitampanSubtopik').value;
+                finalTopik = `SITAMPAN - ${subtopik}`;
+            } else if (finalTopik === 'MBKM') {
+                const subtopik = document.getElementById('mbkmSubtopik').value;
+                finalTopik = `MBKM - ${subtopik}`;
+            } else if (finalTopik === 'Lainnya') {
+                finalTopik = document.getElementById('keperluanLainnya').value;
+            }
+
+            // Collect form data
+            const formData = {
+                namaLengkap: document.getElementById('namaLengkap').value,
+                noWhatsapp: document.getElementById('noWhatsapp').value,
+                jabatan: document.getElementById('jabatan').value,
+                nimNuptkReg: document.getElementById('nimNuptkReg').value,
+                prodiAsal: document.getElementById('prodiSearch').value,
+                fakultasAsal: document.getElementById('fakultasAsal').value,
+                topikKeperluan: finalTopik,
+                deskripsiKeperluan: document.getElementById('deskripsiKeperluan').value,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+
+            // Simulate saving to spreadsheet and getting queue number
+            // In real implementation, this would be an API call to Google Sheets
+            fetch("https://script.google.com/macros/s/AKfycbwFL_o3_T3gtv28K9yqXkJttjhtIBxVYb3ReGTZT1nmdDNWx0O_0ZlO9xxRLV6L9AMaZg/exec", {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Response:", data);
+                alert("Data berhasil dikirim ke spreadsheet!");
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                alert("Gagal mengirim data!");
+            });
+            
+            // Show success modal
+            showSuccessModal();
+            
+            // Reset form
+            document.getElementById('visitorForm').reset();
+            document.getElementById('nimContainer').classList.add('hidden');
+            document.getElementById('lainnyaContainer').classList.add('hidden');
+            document.getElementById('sitampanContainer').classList.add('hidden');
+            document.getElementById('mbkmContainer').classList.add('hidden');
+            document.getElementById('prodiContainer').classList.remove('hidden');
+            document.getElementById('fakultasContainer').classList.remove('hidden');
+            document.getElementById('fakultasAsal').value = '';
+            document.getElementById('prodiDropdown').classList.add('hidden');
+            window.currentProdiList = getAllProdi();
+        }
+
+        function showSuccessModal() {
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972a89b004bfea8a',t:'MTc1NTc4MzU4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
