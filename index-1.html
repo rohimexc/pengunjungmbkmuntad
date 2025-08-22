@@ -166,43 +166,6 @@
                     </select>
                 </div>
 
-                <!-- Tahun Ajaran Container -->
-                <div id="tahunAjaranContainer" class="hidden">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tahun Ajaran Mengikuti Program MBKM/Kampus Berdampak *</label>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Semester -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Semester</label>
-                            <select id="semester" 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
-                                   style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
-                                   onfocus="this.style.borderColor='#027cf6'"
-                                   onblur="this.style.borderColor='#d1d5db'">
-                                <option value="">Pilih Semester</option>
-                                <option value="Ganjil">Ganjil</option>
-                                <option value="Genap">Genap</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Tahun Ajaran -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Tahun Ajaran</label>
-                            <select id="tahunAjaran" 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2"
-                                   style="--tw-ring-color: #027cf6; --tw-border-opacity: 1;"
-                                   onfocus="this.style.borderColor='#027cf6'"
-                                   onblur="this.style.borderColor='#d1d5db'">
-                                <option value="">Pilih Tahun Ajaran</option>
-                                <option value="2022/2023">2022/2023</option>
-                                <option value="2023/2024">2023/2024</option>
-                                <option value="2024/2025">2024/2025</option>
-                                <option value="2024/2025">2025/2026</option>
-                                <option value="2024/2025">2026/2027</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Input Lainnya -->
                 <div id="lainnyaContainer" class="hidden">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Sebutkan Keperluan Lainnya *</label>
@@ -300,6 +263,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
 
     <footer class="bg-white shadow-lg mt-12">
         <div class="container mx-auto px-4 py-8">
@@ -496,7 +461,7 @@
             "Pendaftaran Akun",
             "Pendaftaran Program", 
             "KRS",
-            "Sinkronisasi Nilai",
+            "Sinkronisasi",
             "Logbook",
             "Laporan",
             "Mentor",
@@ -598,25 +563,17 @@
                 const sitampanSubtopik = document.getElementById('sitampanSubtopik');
                 const mbkmContainer = document.getElementById('mbkmContainer');
                 const mbkmSubtopik = document.getElementById('mbkmSubtopik');
-                const tahunAjaranContainer = document.getElementById('tahunAjaranContainer');
-                const semester = document.getElementById('semester');
-                const tahunAjaran = document.getElementById('tahunAjaran');
                 
                 // Reset all containers
                 lainnyaContainer.classList.add('hidden');
                 sitampanContainer.classList.add('hidden');
                 mbkmContainer.classList.add('hidden');
-                tahunAjaranContainer.classList.add('hidden');
                 keperluanLainnya.removeAttribute('required');
                 sitampanSubtopik.removeAttribute('required');
                 mbkmSubtopik.removeAttribute('required');
-                semester.removeAttribute('required');
-                tahunAjaran.removeAttribute('required');
                 keperluanLainnya.value = '';
                 sitampanSubtopik.value = '';
                 mbkmSubtopik.value = '';
-                semester.value = '';
-                tahunAjaran.value = '';
                 
                 if (this.value === 'SITAMPAN') {
                     sitampanContainer.classList.remove('hidden');
@@ -627,48 +584,6 @@
                 } else if (this.value === 'Lainnya') {
                     lainnyaContainer.classList.remove('hidden');
                     keperluanLainnya.setAttribute('required', 'required');
-                }
-            });
-
-            // Handle SITAMPAN subtopic change
-            document.getElementById('sitampanSubtopik').addEventListener('change', function() {
-                const jabatan = document.getElementById('jabatan').value;
-                const tahunAjaranContainer = document.getElementById('tahunAjaranContainer');
-                const semester = document.getElementById('semester');
-                const tahunAjaran = document.getElementById('tahunAjaran');
-                
-                // Only show academic year for Mahasiswa
-                if (this.value && jabatan === 'Mahasiswa') {
-                    tahunAjaranContainer.classList.remove('hidden');
-                    semester.setAttribute('required', 'required');
-                    tahunAjaran.setAttribute('required', 'required');
-                } else {
-                    tahunAjaranContainer.classList.add('hidden');
-                    semester.removeAttribute('required');
-                    tahunAjaran.removeAttribute('required');
-                    semester.value = '';
-                    tahunAjaran.value = '';
-                }
-            });
-
-            // Handle MBKM subtopic change
-            document.getElementById('mbkmSubtopik').addEventListener('change', function() {
-                const jabatan = document.getElementById('jabatan').value;
-                const tahunAjaranContainer = document.getElementById('tahunAjaranContainer');
-                const semester = document.getElementById('semester');
-                const tahunAjaran = document.getElementById('tahunAjaran');
-                
-                // Only show academic year for Mahasiswa
-                if (this.value && jabatan === 'Mahasiswa') {
-                    tahunAjaranContainer.classList.remove('hidden');
-                    semester.setAttribute('required', 'required');
-                    tahunAjaran.setAttribute('required', 'required');
-                } else {
-                    tahunAjaranContainer.classList.add('hidden');
-                    semester.removeAttribute('required');
-                    tahunAjaran.removeAttribute('required');
-                    semester.value = '';
-                    tahunAjaran.value = '';
                 }
             });
 
@@ -799,17 +714,13 @@
                 prodiAsal: document.getElementById('prodiSearch').value,
                 fakultasAsal: document.getElementById('fakultasAsal').value,
                 topikKeperluan: finalTopik,
-                semester: document.getElementById('semester').value,
-                tahunAjaran: document.getElementById('tahunAjaran').value,
                 deskripsiKeperluan: document.getElementById('deskripsiKeperluan').value,
                 timestamp: new Date().toLocaleString('id-ID')
             };
 
             // Simulate saving to spreadsheet (2 second delay)
             // In real implementation, this would be an API call to Google Sheets
-            console.log('Form Data:', formData);
-            // In real implementation, this would be an API call to Google Sheets
-            fetch("https://script.google.com/macros/s/AKfycbyiSEPRiD0xOXI6mSGR3aKo9VkzX7gAKV3vcI0oJun4SlkGmN1jcXc_u9VfBtKBtOSQqw/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbwFL_o3_T3gtv28K9yqXkJttjhtIBxVYb3ReGTZT1nmdDNWx0O_0ZlO9xxRLV6L9AMaZg/exec", {
                 method: "POST",
                 mode: "no-cors",
                 body: JSON.stringify(formData),
@@ -831,7 +742,6 @@
                 document.getElementById('lainnyaContainer').classList.add('hidden');
                 document.getElementById('sitampanContainer').classList.add('hidden');
                 document.getElementById('mbkmContainer').classList.add('hidden');
-                document.getElementById('tahunAjaranContainer').classList.add('hidden');
                 document.getElementById('prodiContainer').classList.remove('hidden');
                 document.getElementById('fakultasContainer').classList.remove('hidden');
                 document.getElementById('fakultasAsal').value = '';
@@ -902,7 +812,8 @@
                 // Add rating to form data
                 window.currentFormData.rating = selectedRating;
                 window.currentFormData.ratingText = ratingTexts[selectedRating];
-                
+
+                                
                 // Save complete data with rating
                 console.log('Complete Form Data with Rating:', window.currentFormData);
                 
@@ -952,5 +863,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9730380880c23e59',t:'MTc1NTg0MzE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972eaa24d344a8e9',t:'MTc1NTgyNjg1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
