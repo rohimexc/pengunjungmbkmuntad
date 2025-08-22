@@ -199,39 +199,6 @@
             </form>
         </div>
 
-        <!-- Rating Modal -->
-        <div id="ratingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-            <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center">
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Bagaimana Pengalaman Anda?</h3>
-                    <p class="text-gray-600 text-sm">Berikan rating untuk membantu kami meningkatkan layanan</p>
-                </div>
-                
-                <div class="mb-6">
-                    <div class="flex justify-center space-x-2 mb-4">
-                        <button onclick="setRating(1)" class="star-btn text-4xl text-gray-300 hover:text-yellow-400 transition duration-200" data-rating="1">★</button>
-                        <button onclick="setRating(2)" class="star-btn text-4xl text-gray-300 hover:text-yellow-400 transition duration-200" data-rating="2">★</button>
-                        <button onclick="setRating(3)" class="star-btn text-4xl text-gray-300 hover:text-yellow-400 transition duration-200" data-rating="3">★</button>
-                        <button onclick="setRating(4)" class="star-btn text-4xl text-gray-300 hover:text-yellow-400 transition duration-200" data-rating="4">★</button>
-                        <button onclick="setRating(5)" class="star-btn text-4xl text-gray-300 hover:text-yellow-400 transition duration-200" data-rating="5">★</button>
-                    </div>
-                    <p id="ratingText" class="text-sm text-gray-500">Klik bintang untuk memberikan rating</p>
-                </div>
-                
-                <div class="flex space-x-3">
-                    <button onclick="skipRating()" 
-                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-200">
-                        Lewati
-                    </button>
-                    <button id="submitRatingBtn" onclick="submitRating()" disabled
-                            class="flex-1 px-4 py-2 text-white rounded-lg transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                            style="background-color: #027cf6;">
-                        Kirim Rating
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <!-- Success Modal -->
         <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
             <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center">
@@ -265,7 +232,6 @@
     </div>
 
     <!-- Footer -->
-
     <footer class="bg-white shadow-lg mt-12">
         <div class="container mx-auto px-4 py-8">
             <div class="text-center">
@@ -681,18 +647,6 @@
         }
 
         function submitForm() {
-            const submitButton = document.querySelector('button[type="submit"]');
-            const formContainer = document.querySelector('.max-w-2xl');
-            const originalButtonText = submitButton.innerHTML;
-            
-            // Show loading state
-            submitButton.innerHTML = 'Mengirim Data...';
-            submitButton.disabled = true;
-            submitButton.style.backgroundColor = '#6b7280';
-            submitButton.style.cursor = 'not-allowed';
-            formContainer.style.filter = 'blur(2px)';
-            formContainer.style.pointerEvents = 'none';
-            
             // Determine final topic value
             let finalTopik = document.getElementById('topikKeperluan').value;
             if (finalTopik === 'SITAMPAN') {
@@ -718,7 +672,7 @@
                 timestamp: new Date().toLocaleString('id-ID')
             };
 
-            // Simulate saving to spreadsheet (2 second delay)
+            // Simulate saving to spreadsheet and getting queue number
             // In real implementation, this would be an API call to Google Sheets
             fetch("https://script.google.com/macros/s/AKfycbwFL_o3_T3gtv28K9yqXkJttjhtIBxVYb3ReGTZT1nmdDNWx0O_0ZlO9xxRLV6L9AMaZg/exec", {
                 method: "POST",
@@ -728,140 +682,49 @@
                     "Content-Type": "application/json"
                 }
             })
+            .then(res => res.json())
+            .then(() => {
+                // langsung tampilkan modal sukses
+                showSuccessModal();
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                // kalau mau, bisa tetap tampilkan modal sukses walaupun gagal
+                showSuccessModal();
+            });
             
-            setTimeout(() => {
-                // Store form data globally for rating submission
-                window.currentFormData = formData;
-                
-                // Show rating modal first
-                showRatingModal();
-                
-                // Reset form
-                document.getElementById('visitorForm').reset();
-                document.getElementById('nimContainer').classList.add('hidden');
-                document.getElementById('lainnyaContainer').classList.add('hidden');
-                document.getElementById('sitampanContainer').classList.add('hidden');
-                document.getElementById('mbkmContainer').classList.add('hidden');
-                document.getElementById('prodiContainer').classList.remove('hidden');
-                document.getElementById('fakultasContainer').classList.remove('hidden');
-                document.getElementById('fakultasAsal').value = '';
-                document.getElementById('prodiDropdown').classList.add('hidden');
-                window.currentProdiList = getAllProdi();
-                
-                // Reset button state (will be reset when modal is closed)
-                submitButton.innerHTML = originalButtonText;
-                submitButton.disabled = false;
-                submitButton.style.backgroundColor = '#027cf6';
-                submitButton.style.cursor = 'pointer';
-            }, 2000);
-        }
+            // Reset form
+            document.getElementById('visitorForm').reset();
+            document.getElementById('nimContainer').classList.add('hidden');
+            document.getElementById('lainnyaContainer').classList.add('hidden');
+            document.getElementById('sitampanContainer').classList.add('hidden');
+            document.getElementById('mbkmContainer').classList.add('hidden');
+            document.getElementById('prodiContainer').classList.remove('hidden');
+            document.getElementById('fakultasContainer').classList.remove('hidden');
+            document.getElementById('fakultasAsal').value = '';
+            document.getElementById('prodiDropdown').classList.add('hidden');
+            window.currentProdiList = getAllProdi();
 
-        // Rating system variables
-        let selectedRating = 0;
-        const ratingTexts = {
-            1: "Sangat Tidak Puas",
-            2: "Tidak Puas", 
-            3: "Cukup Puas",
-            4: "Puas",
-            5: "Sangat Puas"
-        };
-
-        function showRatingModal() {
-            document.getElementById('ratingModal').classList.remove('hidden');
-            resetRatingStars();
+            
         }
 
         function showSuccessModal() {
             document.getElementById('successModal').classList.remove('hidden');
         }
 
-        function setRating(rating) {
-            selectedRating = rating;
-            updateStarDisplay(rating);
-            document.getElementById('ratingText').textContent = ratingTexts[rating];
-            document.getElementById('submitRatingBtn').disabled = false;
-            document.getElementById('submitRatingBtn').style.backgroundColor = '#027cf6';
-            document.getElementById('submitRatingBtn').style.cursor = 'pointer';
-        }
-
-        function updateStarDisplay(rating) {
-            const stars = document.querySelectorAll('.star-btn');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.style.color = '#fbbf24'; // yellow-400
-                } else {
-                    star.style.color = '#d1d5db'; // gray-300
-                }
-            });
-        }
-
-        function resetRatingStars() {
-            selectedRating = 0;
-            const stars = document.querySelectorAll('.star-btn');
-            stars.forEach(star => {
-                star.style.color = '#d1d5db'; // gray-300
-            });
-            document.getElementById('ratingText').textContent = 'Klik bintang untuk memberikan rating';
-            document.getElementById('submitRatingBtn').disabled = true;
-            document.getElementById('submitRatingBtn').style.backgroundColor = '#9ca3af';
-            document.getElementById('submitRatingBtn').style.cursor = 'not-allowed';
-        }
-
-        function submitRating() {
-            if (selectedRating > 0) {
-                // Add rating to form data
-                window.currentFormData.rating = selectedRating;
-                window.currentFormData.ratingText = ratingTexts[selectedRating];
-
-                                
-                // Save complete data with rating
-                console.log('Complete Form Data with Rating:', window.currentFormData);
-                
-                // Close rating modal and show success modal
-                document.getElementById('ratingModal').classList.add('hidden');
-                showSuccessModal();
-            }
-        }
-
-        function skipRating() {
-            // Save data without rating
-            console.log('Form Data (Rating Skipped):', window.currentFormData);
-            
-            // Close rating modal and show success modal
-            document.getElementById('ratingModal').classList.add('hidden');
-            showSuccessModal();
-        }
-
         function closeModal() {
             document.getElementById('successModal').classList.add('hidden');
-            document.getElementById('ratingModal').classList.add('hidden');
-            
-            // Restore form state
             const formContainer = document.querySelector('.max-w-2xl');
-            const submitButton = document.querySelector('button[type="submit"]');
-            
             formContainer.style.filter = 'none';
             formContainer.style.pointerEvents = 'auto';
-            
-            // Ensure submit button is fully reset
-            submitButton.innerHTML = 'Submit';
-            submitButton.disabled = false;
-            submitButton.style.backgroundColor = '#027cf6';
-            submitButton.style.cursor = 'pointer';
         }
 
-        // Close modals when clicking outside
+        // Close modal when clicking outside
         document.getElementById('successModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
-
-        document.getElementById('ratingModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                skipRating();
-            }
-        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972eaa24d344a8e9',t:'MTc1NTgyNjg1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972a89b004bfea8a',t:'MTc1NTc4MzU4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
